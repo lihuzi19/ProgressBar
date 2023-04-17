@@ -9,7 +9,7 @@ public class MainActivity extends AppCompatActivity {
     private CustomProgressBar customProgressBar;
     private DownloadProgressBar downloadProgressBar;
 
-    int progress = 0;
+   private volatile int progress = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +32,18 @@ public class MainActivity extends AppCompatActivity {
                         downloadProgressBar.setProgress(progress);
                         downloadProgressBar.setProgressState(progress + "%");
                     });
-                    progress++;
-                    if (progress > 100) {
-                        progress = 0;
-                    }
+                    addProgress();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    private void addProgress() {
+        progress++;
+        if (progress > 100) {
+            progress = 0;
+        }
     }
 }
